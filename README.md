@@ -2,6 +2,10 @@
 
 Sigvie is a simple Python script that displays images and videos from a local folder in a gallery layout, similar to how Google Photos presents your media. With Sigvie, you can quickly browse media files directly from your filesystem in a web browser. Sigvie is ultra simple and small.
 
+## Demo
+
+![Sigvie demo](demo.jpg)
+
 ## Usage
 
 Start the server:
