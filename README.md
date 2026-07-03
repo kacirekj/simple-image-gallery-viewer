@@ -4,7 +4,9 @@ Sigvie is a simple Python script that displays images and videos from a local fo
 
 ## Demo
 
-![Sigvie demo](demo.jpg) ![Sigvie demo](demo2.jpg)
+![Sigvie demo](demo.jpg) 
+
+![Sigvie demo](demo2.jpg)
 
 ## Usage
 
