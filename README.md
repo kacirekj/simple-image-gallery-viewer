@@ -14,7 +14,7 @@ Start the server:
 python sigvie.py
 ```
 
-Then open a directory containing images and videos in your browser.
+Then handwrite a directory containing images and videos in your browser.
 
 Example:
 
