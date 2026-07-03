@@ -21,10 +21,10 @@ IMAGE_EXTENSIONS = {
 
 
 VIDEO_EXTENSIONS = {
-    # ".mp4",
-    # ".mov",
-    # ".m4v",
-    # ".webm",
+    ".mp4",
+    ".mov",
+    ".m4v",
+    ".webm",
 }
 
 
