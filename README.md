@@ -48,4 +48,4 @@ For better performance, organize your media into smaller folders and open only t
 
 ## Notes
 
-Sigvie is intended for local use. It serves files from your local filesystem through a local web server.
+Sigvie is intended for local use. It serves files from your local filesystem through a local web server. It contains dependency only to Python Bottle library.
