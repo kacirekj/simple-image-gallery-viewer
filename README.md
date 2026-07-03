@@ -6,7 +6,10 @@ Sigvie is a simple Python script that one thing well - it displays your images a
 
 ![Sigvie demo](demo.jpg) 
 
+![Sigvie demo](demo1.jpg)
+
 ![Sigvie demo](demo2.jpg)
+
 
 ## Usage
 
