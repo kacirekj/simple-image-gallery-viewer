@@ -1,6 +1,6 @@
 # Sigvie - The Simple Image Gallery Viewer
 
-Sigvie follows the Unix philosophy: do one thing well. It is a small Python script that displays images and videos from a local folder in a chronological gallery layout, giving you a simple Google Photos-like view of your local media directly in the browser. For editing tags and other things, use different software.
+It is a small Python script that displays images and videos from a local folder in a chronological gallery layout, giving you a simple Google Photos-like view of your local media directly in the browser. Sigvie follows the Unix philosophy: do one thing well - for editing tags and other things, use a different complementary software.
 
 ## Demo
 
