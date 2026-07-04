@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sigvie"
+version = "1.1.0"
+description = "Simple Image Gallery Viewer"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "GPL-3.0-only"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Jiri" }
+]
+dependencies = [
+    "bottle"
+]
+keywords = [
+    "gallery",
+    "images",
+    "photos",
+    "viewer",
+    "bottle",
+    "simple",
+    "video",
+    "organizer"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Multimedia :: Graphics :: Viewers"
+]
+
+[project.urls]
+Homepage = "https://github.com/kacirekj/simple-image-gallery-viewer"
+Repository = "https://github.com/kacirekj/simple-image-gallery-viewer"
+Issues = "https://github.com/kacirekj/simple-image-gallery-viewer/issues"
+
+[project.scripts]
+sigvie = "sigvie.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

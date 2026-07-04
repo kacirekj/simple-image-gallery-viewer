@@ -1,3 +1,4 @@
+import argparse
 from base64 import urlsafe_b64decode, urlsafe_b64encode
 from dataclasses import dataclass
 from datetime import datetime
@@ -5,7 +6,6 @@ from enum import Enum
 from pathlib import Path
 
 from bottle import abort, request, route, run, static_file, template
-
 
 IMAGE_EXTENSIONS = {
     ".jpg",
@@ -19,14 +19,12 @@ IMAGE_EXTENSIONS = {
     ".avif",
 }
 
-
 VIDEO_EXTENSIONS = {
     ".mp4",
     ".mov",
     ".m4v",
     ".webm",
 }
-
 
 INDEX_TEMPLATE = """
 <!doctype html>
@@ -304,5 +302,23 @@ def index():
     )
 
 
+def main():
+    parser = argparse.ArgumentParser(
+        prog="sigvie",
+        description="Simple Image Gallery Viewer",
+    )
+    parser.add_argument(
+        "-p",
+        "--port",
+        type=int,
+        default=30255,
+        help="Port to listen on. Default: 30255.",
+    )
+
+    args = parser.parse_args()
+
+    run(host="127.0.0.1", port=args.port, debug=False, reloader=False)
+
+
 if __name__ == "__main__":
-    run(host="127.0.0.1", port=30000, debug=True, reloader=True)
+    main()
