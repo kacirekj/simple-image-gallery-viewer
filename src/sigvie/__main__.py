@@ -1,5 +1,5 @@
 import argparse
-from base64 import urlsafe_b64decode, urlsafe_b64encode
+import urllib.parse
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
@@ -26,127 +26,7 @@ VIDEO_EXTENSIONS = {
     ".webm",
 }
 
-INDEX_TEMPLATE = """
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Sigvie - Simple Image Gallery Viewer</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 16px;
-            font-family: system-ui, sans-serif;
-        }
-
-        form {
-        }
-
-        input[type="text"] {
-            box-sizing: border-box;
-            width: 100%;
-            padding: 8px;
-        }
-
-        main {
-        }
-
-        .help {
-            max-width: 35em;
-        }
-
-        section {
-            margin-bottom: 64px;
-        }
-
-        img,
-        video {
-            width: 290px;
-            margin-right: 16px;
-            margin-bottom: 16px;
-            display: inline;
-            vertical-align: top;
-        }
-
-        video {
-            background: #222;
-        }
-
-        .empty {
-            color: #666;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <form action="/" method="get">
-            <input
-                id="directoryid"
-                type="text"
-                name="directory"
-                value="{{directory_path}}"
-                placeholder="/home/jiri/Pictures"
-            >
-        </form>
-    </header>
-
-    <main>
-        % if directory:
-            % if media_infos_groups:
-                % for year_month, media_infos in media_infos_groups.items():
-                    <h1>{{Utils.year_month_label(year_month)}}</h1>
-
-                    <section>
-                        % for media in media_infos:
-                            % if media.media_type == MediaType.IMAGE:
-                                <a href="{{media.media_url}}">
-                                    <img
-                                        src="{{media.media_url}}"
-                                        loading="lazy"
-                                        alt=""
-                                        title="{{media.path}}&#10;media time: {{media.media_time}}&#10;created: {{media.created_time}}&#10;modified: {{media.modified_time}}"
-                                    >
-                                </a>
-                            % elif media.media_type == MediaType.VIDEO:
-                                <video
-                                    src="{{media.media_url}}"
-                                    controls
-                                    preload="metadata"
-                                    title="{{media.path}}&#10;media time: {{media.media_time}}&#10;created: {{media.created_time}}&#10;modified: {{media.modified_time}}"
-                                ></video>
-                            % end
-                        % end
-                    </section>
-                % end
-            % else:
-                <p class="empty">There aren't any media files in this directory.</p>
-            % end
-        % else:
-            <div class="help">
-                <h1>Sigvie - Simple Image Gallery Viewer</h1>
-                <ul>
-                    <li>
-                        Enter the path to a directory containing the images and videos you want to display                    </li>
-                    <li>
-                        Use <code>Ctrl+</code> and <code>Ctrl-</code> to change how many items are visible on the page
-                    </li>
-                    <li>
-                        Use <code>Pinch-to-zoom</code> on your touchpad to zoom individual images.
-                    </li>
-                    <li>
-                        Use Back and Forward to navigate into image details 
-                    </li>
-                    <li>
-                        If the directory contains too many media files, the page may become slow or laggy.
-                        For better performance, organize your media into smaller folders.
-                    </li>
-                </ul>
-            </div>
-        % end
-    </main>
-</body>
-</html>
-"""
+BASE_DIR = Path(__file__).parent
 
 
 class MediaType(Enum):
@@ -188,19 +68,6 @@ class Utils:
         raise ValueError(f"Unsupported media file: {path}")
 
     @staticmethod
-    def encode_path(path: Path) -> str:
-        return urlsafe_b64encode(str(path).encode("utf-8")).decode("ascii")
-
-    @staticmethod
-    def decode_path(encoded_path: str) -> Path:
-        decoded = urlsafe_b64decode(encoded_path.encode("ascii")).decode("utf-8")
-        return Path(decoded)
-
-    @staticmethod
-    def create_media_url(path: Path) -> str:
-        return "/api/media?id=" + Utils.encode_path(path)
-
-    @staticmethod
     def format_timestamp(timestamp: float) -> str:
         return datetime.fromtimestamp(timestamp).strftime("%Y-%m-%d %H:%M")
 
@@ -221,7 +88,7 @@ class Utils:
 
         return MediaInfo(
             path=path,
-            media_url=Utils.create_media_url(path),
+            media_url="/api/media?filepath=" + urllib.parse.quote(str(path), safe="/"),
             media_type=Utils.get_media_type(path),
             created_time=created_time,
             modified_time=modified_time,
@@ -257,15 +124,12 @@ class Utils:
 
 @route("/api/media")
 def serve_media():
-    encoded_path = request.query.get("id")
+    filepath_param = request.query.decode().get("filepath", "").strip()
 
-    if not encoded_path:
-        abort(400, "Missing id parameter.")
+    if not filepath_param:
+        abort(400, "Missing filepath parameter.")
 
-    try:
-        media_path = Utils.decode_path(encoded_path)
-    except Exception:
-        abort(400, "The id parameter is not a valid base64 path.")
+    media_path = Path(filepath_param).expanduser().resolve(strict=False)
 
     if not Utils.is_media_file(media_path):
         abort(404, f"File does not exist or is not a supported media file: {media_path}")
@@ -277,29 +141,77 @@ def serve_media():
 
 
 @route("/")
-def index():
-    directory_path = request.query.get("directory", "").strip()
+@route("/<path:path>")
+def index(path: str = ""):
+    # Parse
 
-    directory = None
-    media_infos_groups = None
+    filepath_param = request.query.decode().get("filepath", "").strip()
+    static_path = BASE_DIR / path
 
-    if directory_path:
-        directory = Path(directory_path).expanduser()
+    if filepath_param:
+        filepath = Path(filepath_param).expanduser().resolve(strict=False)
+    else:
+        filepath = None
 
-        if not directory.is_dir():
-            abort(404, f"Directory not found: {directory}")
+    # Switch
 
+    if path == "" and not filepath_param:
+
+        # Return index.html
+
+        return template(
+            "web/page/index.html",
+            filepath=filepath_param,
+            Utils=Utils,
+        )
+
+    elif filepath and filepath.is_dir():
+
+        # Return gallery.html
+
+        directory = filepath
         media_infos = Utils.create_media_infos(directory)
         media_infos_groups = Utils.create_groups(media_infos)
 
-    return template(
-        INDEX_TEMPLATE,
-        directory=directory,
-        directory_path=directory_path,
-        media_infos_groups=media_infos_groups,
-        MediaType=MediaType,
-        Utils=Utils,
-    )
+        return template(
+            "web/page/gallery.html",
+            filepath=filepath_param,
+            media_infos_groups=media_infos_groups,
+            MediaType=MediaType,
+            Utils=Utils,
+        )
+
+    elif filepath and filepath.is_file():
+
+        # Return file.html
+
+        media_info = Utils.create_media_info(filepath)
+
+        return template(
+            "web/page/file.html",
+            filepath=filepath_param,
+            media=media_info,
+            MediaType=MediaType,
+            Utils=Utils,
+        )
+
+    elif filepath_param:
+
+        # Return 404 filepath not found
+
+        abort(404, f"Directory or media file not found: {filepath_param}")
+
+    elif static_path.is_file():
+
+        # Return static file
+
+        return static_file(static_path.name, root=str(static_path.parent))
+
+    else:
+
+        # Return 404 path not found
+
+        abort(404, f"Path not found: /{path}")
 
 
 def main():

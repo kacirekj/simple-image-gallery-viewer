@@ -1,0 +1,44 @@
+body {
+    margin: 0;
+    padding: 16px;
+    box-sizing: border-box;
+    font-family: system-ui, sans-serif;
+}
+
+header {
+    margin-bottom: 16px;
+}
+
+input[type="text"] {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 8px;
+}
+
+.help {
+    max-width: 35em;
+}
+
+section {
+    margin-bottom: 64px;
+}
+
+.gallery-img-video {
+    width: 290px;
+    margin-right: 16px;
+    margin-bottom: 16px;
+    display: inline;
+    vertical-align: top;
+}
+
+.file-video-large {
+    max-width: 100%;
+    box-sizing: border-box;
+    max-height: 100%;
+    display: inline;
+    vertical-align: top;
+}
+
+.empty {
+    color: #666;
+}

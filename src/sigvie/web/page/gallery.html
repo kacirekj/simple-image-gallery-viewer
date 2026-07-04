@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+    % include("web/component/head.html", filepath=filepath)
+</head>
+<body>
+<header>
+    % include("web/component/filepath_form.html", filepath=filepath)
+</header>
+
+<main>
+    % if media_infos_groups:
+    % for year_month, media_infos in media_infos_groups.items():
+    <h1>{{Utils.year_month_label(year_month)}}</h1>
+
+    <section>
+        % for media in media_infos:
+        % if media.media_type == MediaType.IMAGE:
+        <a href="?filepath={{media.path}}">
+            <img
+                    class="gallery-img-video"
+                    src="{{media.media_url}}"
+                    loading="lazy"
+                    alt=""
+                    title="{{media.path}}&#10;media time: {{media.media_time}}&#10;created: {{media.created_time}}&#10;modified: {{media.modified_time}}"
+            >
+        </a>
+        % elif media.media_type == MediaType.VIDEO:
+        <video
+                class="gallery-img-video"
+                src="{{media.media_url}}"
+                controls
+                preload="metadata"
+                title="{{media.path}}&#10;media time: {{media.media_time}}&#10;created: {{media.created_time}}&#10;modified: {{media.modified_time}}"
+        ></video>
+        % end
+        % end
+    </section>
+    % end
+    % else:
+    <p class="empty">There aren't any media files in this directory.</p>
+    % end
+</main>
+</body>
+</html>

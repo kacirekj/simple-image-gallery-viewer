@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+    % include("web/component/head.html", filepath=filepath)
+</head>
+
+<body>
+<header>
+    % include("web/component/filepath_form.html", filepath=filepath)
+</header>
+
+<main>
+    <h1>Sigvie - Simple Image Gallery Viewer</h1>
+    <ul>
+        <li>
+            Enter the path to a directory containing the images and videos you want to display
+        </li>
+        <li>
+            Use <code>Ctrl+</code> and <code>Ctrl-</code> to change how many items are visible on the page
+        </li>
+        <li>
+            Use <code>Pinch-to-zoom</code> on your touchpad to zoom individual images.
+        </li>
+        <li>
+            Use Back and Forward to navigate into image details
+        </li>
+        <li>
+            If the directory contains too many media files, the page may become slow or laggy.
+            For better performance, organize your media into smaller folders.
+        </li>
+    </ul>
+</main>
+</body>
+</html>
