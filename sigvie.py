@@ -4,7 +4,7 @@ from datetime import datetime
 from enum import Enum
 from pathlib import Path
 
-from bottle import abort, request, response, route, run, static_file, template
+from bottle import abort, request, route, run, static_file, template
 
 
 IMAGE_EXTENSIONS = {
@@ -36,46 +36,25 @@ INDEX_TEMPLATE = """
     <title>Sigvie - Simple Image Gallery Viewer</title>
     <style>
         body {
-            max-width: 40em;
-        }
-    </style>
-</head>
-<body>
-    <h1>Sigvie - Simple Image Gallery Viewer</h1>
-    <p>
-        Enter the path to a directory containing the images and videos you want to display.
-        Example: <code>localhost:30000/home/jiri/Pictures</code>
-    </p>
-    <p>
-        Use Ctrl+ and Ctrl- to change how many items are visible on the page.
-    </p>
-    <p>
-        Use pinch-to-zoom on your touchpad to zoom individual images.
-    </p>
-    <p>
-        If the directory contains too many media files, the page may become slow or laggy.
-        For better performance, organize your media into smaller folders.
-    </p>
-</body>
-</html>
-"""
-
-
-GALLERY_TEMPLATE = """
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Media gallery</title>
-    <style>
-        body {
             margin: 0;
             padding: 16px;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background: #f5f5f5;
+            font-family: system-ui, sans-serif;
+        }
+
+        form {
+        }
+
+        input[type="text"] {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 8px;
         }
 
         main {
+        }
+
+        .help {
+            max-width: 35em;
         }
 
         section {
@@ -101,35 +80,70 @@ GALLERY_TEMPLATE = """
     </style>
 </head>
 <body>
-    <main>
-        % if media_infos_groups:
-            % for year_month, media_infos in media_infos_groups.items():
-                <h1>{{Utils.year_month_label(year_month)}}</h1>
+    <header>
+        <form action="/" method="get">
+            <input
+                id="directoryid"
+                type="text"
+                name="directory"
+                value="{{directory_path}}"
+                placeholder="/home/jiri/Pictures"
+            >
+        </form>
+    </header>
 
-                <section>
-                    % for media in media_infos:
-                        % if media.media_type == MediaType.IMAGE:
-                            <a href="{{media.media_url}}">
-                                <img
+    <main>
+        % if directory:
+            % if media_infos_groups:
+                % for year_month, media_infos in media_infos_groups.items():
+                    <h1>{{Utils.year_month_label(year_month)}}</h1>
+
+                    <section>
+                        % for media in media_infos:
+                            % if media.media_type == MediaType.IMAGE:
+                                <a href="{{media.media_url}}">
+                                    <img
+                                        src="{{media.media_url}}"
+                                        loading="lazy"
+                                        alt=""
+                                        title="{{media.path}}&#10;media time: {{media.media_time}}&#10;created: {{media.created_time}}&#10;modified: {{media.modified_time}}"
+                                    >
+                                </a>
+                            % elif media.media_type == MediaType.VIDEO:
+                                <video
                                     src="{{media.media_url}}"
-                                    loading="lazy"
-                                    alt=""
+                                    controls
+                                    preload="metadata"
                                     title="{{media.path}}&#10;media time: {{media.media_time}}&#10;created: {{media.created_time}}&#10;modified: {{media.modified_time}}"
-                                >
-                            </a>
-                        % elif media.media_type == MediaType.VIDEO:
-                            <video
-                                src="{{media.media_url}}"
-                                controls
-                                preload="metadata"
-                                title="{{media.path}}&#10;media time: {{media.media_time}}&#10;created: {{media.created_time}}&#10;modified: {{media.modified_time}}"
-                            ></video>
+                                ></video>
+                            % end
                         % end
-                    % end
-                </section>
+                    </section>
+                % end
+            % else:
+                <p class="empty">There aren't any media files in this directory.</p>
             % end
         % else:
-            <p class="empty">There aren't any media files in this directory.</p>
+            <div class="help">
+                <h1>Sigvie - Simple Image Gallery Viewer</h1>
+                <ul>
+                    <li>
+                        Enter the path to a directory containing the images and videos you want to display                    </li>
+                    <li>
+                        Use <code>Ctrl+</code> and <code>Ctrl-</code> to change how many items are visible on the page
+                    </li>
+                    <li>
+                        Use <code>Pinch-to-zoom</code> on your touchpad to zoom individual images.
+                    </li>
+                    <li>
+                        Use Back and Forward to navigate into image details 
+                    </li>
+                    <li>
+                        If the directory contains too many media files, the page may become slow or laggy.
+                        For better performance, organize your media into smaller folders.
+                    </li>
+                </ul>
+            </div>
         % end
     </main>
 </body>
@@ -266,21 +280,24 @@ def serve_media():
 
 @route("/")
 def index():
-    return template(INDEX_TEMPLATE)
+    directory_path = request.query.get("directory", "").strip()
 
+    directory = None
+    media_infos_groups = None
 
-@route("/<directory_path:path>")
-def gallery(directory_path: str):
-    directory = Path("/" + directory_path).expanduser()
+    if directory_path:
+        directory = Path(directory_path).expanduser()
 
-    if not directory.is_dir():
-        abort(404, f"Directory not found: {directory}")
+        if not directory.is_dir():
+            abort(404, f"Directory not found: {directory}")
 
-    media_infos = Utils.create_media_infos(directory)
-    media_infos_groups = Utils.create_groups(media_infos)
+        media_infos = Utils.create_media_infos(directory)
+        media_infos_groups = Utils.create_groups(media_infos)
 
     return template(
-        GALLERY_TEMPLATE,
+        INDEX_TEMPLATE,
+        directory=directory,
+        directory_path=directory_path,
         media_infos_groups=media_infos_groups,
         MediaType=MediaType,
         Utils=Utils,
