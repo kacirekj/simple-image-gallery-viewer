@@ -10,27 +10,52 @@ Sigvie is a small Python script that displays images and videos from a local fol
 
 ![Sigvie demo](doc/demo2.jpg)
 
+## Installation
+
+Install with `pipx` (recommended):
+
+```bash
+pipx install sigvie
+```
+
+Or install with `pip3`:
+
+```bash
+pip3 install sigvie
+```
 
 ## Usage
 
-Start the server:
+Start the server on default port 30255:
 
 ```bash
-python __main__.py
+sigvie
 ```
 
-Then handwrite a directory containing images and videos in your browser.
+You can also choose a custom port:
 
-Example:
-
-```text
-http://localhost:30000/home/jiri/Pictures
+```bash
+sigvie --port 30255
 ```
 
-On macOS, the path may look like this:
+Then open Sigvie in your browser:
 
 ```text
-http://localhost:30000/Users/jiri/Pictures
+http://localhost:30255
+```
+
+Enter the path to a directory containing images and videos into the input box at the top of the page.
+
+Example on Linux:
+
+```text
+/home/jiri/Pictures
+```
+
+Example on macOS:
+
+```text
+/Users/jiri/Pictures
 ```
 
 ## Controls
