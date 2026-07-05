@@ -1,27 +1,14 @@
 <!doctype html>
 <html lang="en">
 <head>
-    % include("web/component/head.html", filepath=filepath)
+    % include("web/component/head_component.html", filepath=filepath)
 </head>
 <body style="display: flex; flex-direction: column; height: 100vh;">
-<header style="flex: 0 0 auto; background-color: aqua">
-    <form action="/" method="get">
-        <input
-                type="text"
-                name="filepath"
-                value="{{filepath}}"
-                placeholder="/home/jiri/Pictures"
-        >
-    </form>
+<header style="flex: 0 0 auto;">
+    % include("web/component/filepath_form_component.html", filepath=filepath)
 </header>
 <main style="flex: 1 1 auto; min-height: 0px; text-align: center">
-    <img
-            style="max-height: 100%;"
-            src="{{media.media_url}}"
-            loading="lazy"
-            alt=""
-            title="{{media.path}}&#10;media time: {{media.media_time}}&#10;created: {{media.created_time}}&#10;modified: {{media.modified_time}}"
-    >
+    % include("web/component/media_component.html", media=media, size='BIG')
 </main>
 </body>
 </html>

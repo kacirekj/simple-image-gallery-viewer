@@ -5,7 +5,7 @@ from datetime import datetime
 from enum import Enum
 from pathlib import Path
 
-from bottle import abort, request, route, run, static_file, template
+from bottle import abort, request, route, run, static_file, template, TEMPLATE_PATH
 
 IMAGE_EXTENSIONS = {
     ".jpg",
@@ -27,7 +27,7 @@ VIDEO_EXTENSIONS = {
 }
 
 BASE_DIR = Path(__file__).parent
-
+TEMPLATE_PATH.insert(0, str(BASE_DIR))
 
 class MediaType(Enum):
     IMAGE = "IMAGE"
@@ -45,6 +45,10 @@ class MediaInfo:
 
 
 class Utils:
+    @staticmethod
+    def inline_include(file, **kwargs):
+        return template(file, Utils=Utils, **kwargs)
+
     @staticmethod
     def is_image_file(path: Path) -> bool:
         return path.is_file() and path.suffix.lower() in IMAGE_EXTENSIONS

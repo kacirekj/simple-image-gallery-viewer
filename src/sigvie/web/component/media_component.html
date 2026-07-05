@@ -1,0 +1,19 @@
+    % media_title = Utils.inline_include("web/component/media_title_component.html", media=media)
+    %
+    % if media.media_type == MediaType.IMAGE:
+    <img
+            class="{{'media-box-big' if size == 'BIG' else 'media-box'}}"
+            src="{{media.media_url}}"
+            loading="lazy"
+            alt=""
+            title="{{media_title}}"
+    >
+    % elif media.media_type == MediaType.VIDEO:
+    <video
+            class="{{'media-box-big' if size == 'BIG' else 'media-box'}}"
+            src="{{media.media_url}}"
+            controls
+            preload="metadata"
+            title="{{media_title}}"
+    ></video>
+    % end

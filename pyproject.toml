@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sigvie"
-version = "1.1.0"
+version = "1.1.4"
 description = "Simple Image Gallery Viewer"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -46,3 +46,8 @@ sigvie = "sigvie.__main__:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+sigvie = [
+    "web/**/*"
+]

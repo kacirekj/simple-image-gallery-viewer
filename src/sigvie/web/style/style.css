@@ -13,6 +13,7 @@ input[type="text"] {
     box-sizing: border-box;
     width: 100%;
     padding: 8px;
+    /*border-radius: 8px;*/
 }
 
 .help {
@@ -23,19 +24,25 @@ section {
     margin-bottom: 64px;
 }
 
-.gallery-img-video {
-    width: 290px;
+.media-box {
+    box-sizing: border-box;
+    overflow: hidden;
+    /*border-radius: 16px;*/
+    width: 295px;
     margin-right: 16px;
     margin-bottom: 16px;
-    display: inline;
+    display: inline-block;
     vertical-align: top;
 }
 
-.file-video-large {
-    max-width: 100%;
-    box-sizing: border-box;
+.media-box-big {
     max-height: 100%;
-    display: inline;
+    box-sizing: border-box;
+    overflow: hidden;
+    /*border-radius: 16px;*/
+    margin-right: 16px;
+    margin-bottom: 16px;
+    display: inline-block;
     vertical-align: top;
 }
 
