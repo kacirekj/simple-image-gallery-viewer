@@ -71,9 +71,10 @@ On a touchpad, use pinch-to-zoom to zoom individual images or adjust the page vi
 
 ## Performance Notes
 
-If a directory contains too many media files, especially thousands of images or videos, the page may become slow or laggy.
+If a directory contains too many media files, especially thousands of images or videos, the page may become slow or laggy. 
+This is limitation of the browser and hardware you use.
 
-For better performance, organize your media into smaller folders and open only the folder you want to browse.
+For better performance, organize your media into smaller folders (e.g. Family, Web, Memes) and open only the folder you want to browse.
 
 
 ## Notes
