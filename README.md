@@ -76,6 +76,11 @@ This is limitation of the browser and hardware you use.
 
 For better performance, organize your media into smaller folders (e.g. Family, Web, Memes) and open only the folder you want to browse.
 
+## How it works
+
+When you enter the directory path, the Sigvie will recursively display all the images in the dicrectory and all subdirectoris. (Exactly as Google Photos does it).
+Sigvie will display the images and videos in chronological order based on the "Created" and "Modified" file attributes (Tha smaller value of these 2 wins). 
+To keep things simple, Sigvie intentionally doesn't consider image or video tags but uses only file attributes.
 
 ## Notes
 
