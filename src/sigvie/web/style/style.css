@@ -13,7 +13,6 @@ input[type="text"] {
     box-sizing: border-box;
     width: 100%;
     padding: 8px;
-    /*border-radius: 8px;*/
 }
 
 .help {
@@ -27,7 +26,6 @@ section {
 .media-box {
     box-sizing: border-box;
     overflow: hidden;
-    /*border-radius: 16px;*/
     width: 295px;
     margin-right: 16px;
     margin-bottom: 16px;
@@ -39,7 +37,6 @@ section {
     max-height: 100%;
     box-sizing: border-box;
     overflow: hidden;
-    /*border-radius: 16px;*/
     margin-right: 16px;
     margin-bottom: 16px;
     display: inline-block;

@@ -161,24 +161,24 @@ def index(path: str = ""):
 
     if path == "" and not filepath_param:
 
-        # Return index.html
+        # Return index_page.html
 
         return template(
-            "web/page/index.html",
+            "web/page/index_page.html",
             filepath=filepath_param,
             Utils=Utils,
         )
 
     elif filepath and filepath.is_dir():
 
-        # Return gallery.html
+        # Return gallery_page.html
 
         directory = filepath
         media_infos = Utils.create_media_infos(directory)
         media_infos_groups = Utils.create_groups(media_infos)
 
         return template(
-            "web/page/gallery.html",
+            "web/page/gallery_page.html",
             filepath=filepath_param,
             media_infos_groups=media_infos_groups,
             MediaType=MediaType,
@@ -187,12 +187,12 @@ def index(path: str = ""):
 
     elif filepath and filepath.is_file():
 
-        # Return file.html
+        # Return file_page.html
 
         media_info = Utils.create_media_info(filepath)
 
         return template(
-            "web/page/file.html",
+            "web/page/file_page.html",
             filepath=filepath_param,
             media=media_info,
             MediaType=MediaType,
