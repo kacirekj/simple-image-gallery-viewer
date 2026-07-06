@@ -49,5 +49,5 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 sigvie = [
-    "web/**/*"
+    "templates/**/*"
 ]

@@ -1,14 +1,14 @@
 <!doctype html>
 <html lang="en">
 <head>
-    % include("web/component/head_component.html", filepath=filepath)
+    % include("templates/component/head_component.html", filepath=filepath)
 </head>
 <body style="display: flex; flex-direction: column; height: 100vh;">
 <header style="flex: 0 0 auto;">
-    % include("web/component/filepath_form_component.html", filepath=filepath)
+    % include("templates/component/filepath_form_component.html", filepath=filepath)
 </header>
 <main style="flex: 1 1 auto; min-height: 0px; text-align: center">
-    % include("web/component/media_component.html", media=media, size='BIG')
+    % include("templates/component/media_component.html", media=media, size='BIG')
 </main>
 </body>
 </html>
