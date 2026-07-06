@@ -3,14 +3,12 @@
 <head>
     % include("templates/component/head_component.html", filepath=filepath)
 </head>
-<body style="display: flex; flex-direction: column; align-items: center;">
-<header style="text-align: center; width: 50em;">
+<body style="align-items: center;">
+<header style="display: flex; flex-direction: column; gap: 16px; align-items: center; width: 50em;">
     <h1>Sigvie - Simple Image Gallery Viewer</h1>
-</header>
-<nav style="width: 50em;">
     % include("templates/component/filepath_form_component.html", filepath=filepath)
-</nav>
-<main style="margin-top: 32px; width: 50em;">
+</header>
+<main style="width: 50em;">
     <h2>Help</h2>
     <p>
         Enter the path to a directory containing the images and videos you want to display

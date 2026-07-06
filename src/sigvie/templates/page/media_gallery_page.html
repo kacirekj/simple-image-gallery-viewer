@@ -9,17 +9,21 @@
 </header>
 % if media_infos_groups:
 <main>
+    <div style="display: flex; flex-direction: column; gap: 32px">
     % for year_month, media_infos in media_infos_groups.items():
-    <section>
-        <h1>{{Utils.year_month_label(year_month)}}</h1>
+        <section>
+            <h1>{{Utils.year_month_label(year_month)}}</h1>
 
-        % for media in media_infos:
-        <a href="?filepath={{media.path}}">
-            % include("templates/component/media_component.html", media=media, size='SMALL')
-        </a>
-        % end
-    </section>
+            <div style="display:flex; flex-direction: row; flex-wrap: wrap;">
+                % for media in media_infos:
+                <a href="?filepath={{media.path}}">
+                    % include("templates/component/media_component.html", media=media, size='SMALL')
+                </a>
+                % end
+            </div>
+        </section>
     % end
+    </div>
 </main>
 % else:
 <main>

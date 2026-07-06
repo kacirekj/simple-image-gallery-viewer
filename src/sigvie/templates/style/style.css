@@ -3,10 +3,9 @@ body {
     padding: 16px;
     box-sizing: border-box;
     font-family: system-ui, sans-serif;
-}
-
-header {
-    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
 input[type="text"] {
@@ -15,20 +14,15 @@ input[type="text"] {
     padding: 8px;
 }
 
-.help {
-    max-width: 35em;
-}
-
-section {
-    margin-bottom: 64px;
-}
-
 .media-box {
     box-sizing: border-box;
     overflow: hidden;
-    width: 295px;
-    margin-right: 16px;
-    margin-bottom: 16px;
+    padding: 0;
+    /* 290px + 16px margin = optimal for FullHD */
+    width: 300px;
+    margin: 0px;
+    margin-right: 8px;
+    margin-bottom: 8px;
     display: inline-block;
     vertical-align: top;
 }
@@ -37,7 +31,6 @@ section {
     max-height: 100%;
     box-sizing: border-box;
     overflow: hidden;
-    margin-right: 16px;
     margin-bottom: 16px;
     display: inline-block;
     vertical-align: top;
